@@ -2,6 +2,7 @@ class Node {
     constructor(value, next, prev) {
         this.value = value;
         this.next = next || null;
+        this.prev = prev || null;
     }
 }
 
@@ -15,16 +16,16 @@ class LinkedList {
         let prevHead = this.head;
         let newHead = new Node(value, prevHead);
         this.head = newHead;
+        prevHead.prev = this.head;
+        this.tail = prevHead;
         this.size++;
     }
     append(value) {
-        // let newTail = new Node(value)
-        // this.tail
-        let current = this.head;
-        while (current.next !== null) {
-            current = current.next;
-        }
-        current.next = new Node(value);
+        let newNode = new Node(value);
+        newNode.prev = this.tail;
+        this.tail.next = newNode;
+        this.tail = newNode;
+        // this.tail.prev = prevTail
         this.size++;
     }
     insert(value, index) {
@@ -42,33 +43,13 @@ class LinkedList {
         current.next = rest;
         this.size++;
     }
-
-    // * * * * * *
-    reverse() {
-        if (!this.head.next) {
-            return;
-        }
-        let first = this.head;
-        let second = this.head.next;
-        while (second) {
-            let temp = second.next;
-            second.next = first;
-            first = second;
-            second = temp;
-        }
-        this.head.next = null;
-        this.head = first;
-    }
-
     delete(index) {}
     print() {
         let current = this.head;
         while (current !== null) {
-            process.stdout.write(` |${current.value}| ->`);
+            process.stdout.write(` |${current.value}| <->`);
             current = current.next;
         }
-        console.log('null');
-
     }
 }
 
@@ -81,10 +62,7 @@ List.append(0);
 List.append(-1);
 List.append(-2);
 
-List.reverse();
-List.insert(999, 5);
-List.reverse();
-
+// List.insert(999, 5);
 List.print();
 
 // |_| |_| |_| |_| |_| |_| |_| |_|
